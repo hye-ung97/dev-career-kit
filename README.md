@@ -1,18 +1,62 @@
 <div align="center">
 
-# 🎤 mock-interview
+# 🧰 dev-career-kit
 
-**이력서로 보는 실전 기술 면접 — 꼬리물기부터 별점 피드백까지**
+**개발자 커리어를 돕는 Claude Skill 모음**
 
-이력서(+선택 채용공고)를 올리면 Claude가 면접관이 되어 한 질문씩 진행하고,<br/>끝나면 질문별 개선안과 별점 리포트를 줍니다.
-
-*Claude Pro/Max 구독으로 추가 비용 없이 동작하는 Claude Skill입니다.*
+이력서 첨삭부터 모의 면접까지 — 취업·이직 과정을 Claude와 함께 준비하세요.<br/>
+모든 스킬은 **Claude Pro/Max 구독으로 추가 비용 없이** 동작합니다.
 
 </div>
 
 ---
 
-## 왜 쓰나요
+## 수록 스킬
+
+| 스킬 | 하는 일 | 상태 |
+|------|---------|------|
+| 🎤 **[mock-interview](#-mock-interview)** | 이력서(+JD) 기반 실전 기술 면접 · 꼬리물기 · 별점 피드백 | ✅ 사용 가능 |
+| 🔜 *더 추가 예정* | 이력서 리뷰, 자소서 코칭 등 | 준비 중 |
+
+> 새 스킬이 추가되면 이 표와 함께 아래에 사용법 섹션이 늘어납니다.
+
+---
+
+## 설치 (공통)
+
+먼저 **Claude Pro 또는 Max 구독**이 필요합니다. 두 방법 중 편한 것을 고르세요.
+
+### 방법 A. claude.ai 웹/데스크톱 (가장 쉬움)
+
+1. 이 저장소의 [**Releases**](../../releases) 페이지에서 원하는 스킬의 `.zip`을 내려받습니다. *(예: `mock-interview.zip`)*
+2. [claude.ai](https://claude.ai)에 Pro/Max 계정으로 로그인
+3. **설정 → Skills**(또는 Capabilities / Features)로 이동 *(스킬 업로드가 보이려면 코드 실행 기능이 켜져 있어야 합니다)*
+4. **스킬 업로드**에서 받은 `.zip`을 선택
+5. 새 대화에서 스킬을 호출하면 끝!
+
+### 방법 B. Claude Code (CLI / IDE)
+
+저장소를 클론해 원하는 스킬 폴더를 복사합니다.
+
+```bash
+git clone https://github.com/hye-ung97/dev-career-kit.git
+cd dev-career-kit
+
+# 전역으로 설치(모든 프로젝트에서 사용)
+cp -r .claude/skills/mock-interview ~/.claude/skills/
+```
+
+이후 `/mock-interview` 로 실행하거나 자연어로 호출됩니다.
+
+---
+
+## 🎤 mock-interview
+
+**이력서로 보는 실전 기술 면접 — 꼬리물기부터 별점 피드백까지.**
+
+이력서(+선택 채용공고)를 올리면 Claude가 면접관이 되어 한 질문씩 진행하고, 끝나면 질문별 개선안과 별점 리포트를 줍니다. 새 대화에서 이력서를 올리고 **"모의 면접 봐줘"** 라고 하면 시작됩니다.
+
+### 왜 쓰나요
 
 예상 질문 리스트를 읽어주는 도구는 많습니다. 이 스킬은 다릅니다.
 
@@ -23,37 +67,7 @@
 
 > 토스식 서버 개발자 면접의 관점을 반영했습니다 — *"쓸 줄 안다"가 아니라 "왜 그렇게 했고 내부에서 무슨 일이 일어나는지 아는가."*
 
----
-
-## 시작하기
-
-먼저 **Claude Pro 또는 Max 구독**이 필요합니다. 두 방법 중 편한 것을 고르세요.
-
-### 방법 A. claude.ai 웹/데스크톱 (가장 쉬움)
-
-1. 이 저장소의 [**Releases**](../../releases) 페이지에서 최신 `mock-interview.zip`을 내려받습니다.
-2. [claude.ai](https://claude.ai)에 Pro/Max 계정으로 로그인
-3. **설정 → Skills**(또는 Capabilities / Features)로 이동 *(스킬 업로드가 보이려면 코드 실행 기능이 켜져 있어야 합니다)*
-4. **스킬 업로드**에서 받은 `mock-interview.zip`을 선택
-5. 새 대화에서 이력서를 올리고 **"모의 면접 봐줘"** 라고 입력하면 끝!
-
-### 방법 B. Claude Code (CLI / IDE)
-
-저장소를 클론해 스킬 폴더를 복사합니다.
-
-```bash
-git clone <this-repo-url>
-cd mock-interview
-
-# 전역으로 설치(모든 프로젝트에서 사용)
-cp -r .claude/skills/mock-interview ~/.claude/skills/
-```
-
-이후 `/mock-interview` 로 실행하거나 "모의 면접 봐줘"로 자동 호출됩니다.
-
----
-
-## 이렇게 진행됩니다
+### 이렇게 진행됩니다
 
 ```
 1. 이력서 업로드 (필수)  +  채용공고 JD (선택)
@@ -75,9 +89,7 @@ cp -r .claude/skills/mock-interview ~/.claude/skills/
 
 **리포트는 4개 축으로 채점됩니다:** 기술 깊이 · 문제 해결·설계 · 커뮤니케이션 · 경험의 구체성 (각 1~5점, 종합 별점 = 평균).
 
----
-
-## 자주 묻는 질문
+### 자주 묻는 질문
 
 **Q. 비용이 드나요?**
 아니요. 본인의 Claude Pro/Max 구독 한도 안에서 동작하며, 별도 API 키나 과금이 없습니다.
@@ -96,20 +108,25 @@ cp -r .claude/skills/mock-interview ~/.claude/skills/
 ## 프로젝트 구조
 
 ```
-.claude/skills/mock-interview/     # 스킬 본체
-├─ SKILL.md                        # 면접관 페르소나 · 진행 순서 · 꼬리물기 규칙
-├─ references/backend-cs-question-bank.md   # CS 구간 질문은행
-└─ assets/
-   ├─ feedback-template.md         # 피드백 리포트 양식
-   └─ scoring-rubric.md            # 별점 산정 기준
+.claude/skills/
+└─ mock-interview/                 # 스킬 본체
+   ├─ SKILL.md                     # 면접관 페르소나 · 진행 순서 · 꼬리물기 규칙
+   ├─ references/backend-cs-question-bank.md   # CS 구간 질문은행
+   └─ assets/
+      ├─ feedback-template.md      # 피드백 리포트 양식
+      └─ scoring-rubric.md         # 별점 산정 기준
+
+.agents/skills/
+└─ mock-interview                  # → .claude/skills/mock-interview 심볼릭 링크
+                                   #   (.agents 경로를 쓰는 런타임용 미러)
 ```
 
 > 배포용 zip과 산출물은 저장소에 포함하지 않고 [Releases](../../releases)로 제공합니다.
 
 ### 기여 · 배포 (maintainer용)
 
-1. `.claude/skills/mock-interview/`(SKILL.md, `references/`, `assets/`)를 수정합니다.
-2. 폴더 **전체**를 zip으로 묶어 배포합니다. *(일부 파일만 넣으면 피드백 양식이나 CS 질문은행이 누락됩니다.)*
+1. `.claude/skills/<스킬명>/`(SKILL.md, `references/`, `assets/`)을 수정합니다.
+2. 폴더 **전체**를 zip으로 묶습니다. *(일부 파일만 넣으면 피드백 양식이나 질문은행이 누락됩니다.)*
    ```bash
    cd .claude/skills
    zip -r mock-interview.zip mock-interview
@@ -119,5 +136,5 @@ cp -r .claude/skills/mock-interview ~/.claude/skills/
 ---
 
 <div align="center">
-<sub>별점·평가 기준은 토스 공식 커리어 아티클, 서버 개발자 FAQ, 백엔드 면접 후기, 토스뱅크 면접 가이드 등을 참고했습니다.</sub>
+<sub>mock-interview의 별점·평가 기준은 토스 공식 커리어 아티클, 서버 개발자 FAQ, 백엔드 면접 후기, 토스뱅크 면접 가이드 등을 참고했습니다.</sub>
 </div>

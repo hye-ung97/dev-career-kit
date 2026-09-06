@@ -1,5 +1,8 @@
 # 배포 산출물 (소스 .claude/ 에서 생성됨 → GitHub Releases로 배포)
 dist/
 
+# 로컬 도구용 심볼릭 링크 (.claude/skills 를 가리키는 바로가기)
+.agents/
+
 # macOS
 .DS_Store

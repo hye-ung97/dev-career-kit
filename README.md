@@ -2,10 +2,10 @@
 
 # 🧰 dev-career-kit
 
-**개발자 커리어를 돕는 Claude Skill 모음**
+**개발자 커리어를 돕는 Claude Code · Codex 공용 Agent Skill 모음**
 
-이력서 첨삭부터 모의 면접까지 — 취업·이직 과정을 Claude와 함께 준비하세요.<br/>
-모든 스킬은 **Claude Pro/Max 구독으로 추가 비용 없이** 동작합니다.
+모의 면접부터 실전 회고까지 — 취업·이직 과정을 원하는 에이전트와 함께 준비하세요.<br/>
+하나의 스킬 원본을 Claude Code와 Codex에서 함께 사용합니다.
 
 </div>
 
@@ -15,55 +15,85 @@
 
 | 스킬 | 하는 일 | 상태 |
 |------|---------|------|
-| 🎤 **[mock-interview](#-mock-interview)** | 이력서(+JD) 기반 실전 기술 면접 · 꼬리물기 · 별점 피드백 | ✅ 사용 가능 |
+| 🎤 **[mock-interview](#-mock-interview)** | 이력서(+JD) 기반 실전 기술 면접 · 꼬리물기 · 독립 평가자 채점 리포트 | ✅ 사용 가능 |
+| 🔁 **[interview-retro](#-interview-retro)** | 실전 면접 회고 → 놓친 질문 복습 → 다음 모의면접으로 환류 | ✅ 사용 가능 |
 | 🔜 *더 추가 예정* | 이력서 리뷰, 자소서 코칭 등 | 준비 중 |
 
-> 새 스킬이 추가되면 이 표와 함께 아래에 사용법 섹션이 늘어납니다.
+> 두 스킬은 **환류 루프**로 짝을 이룹니다 — `mock-interview`가 세션 노트를 쌓고, `interview-retro`가 실전에서 받은 질문을 그 노트에 되먹여 다음 연습을 실전에 더 가깝게 만듭니다.
 
 ---
 
-## 설치 (공통)
+## 사용 방법
 
-먼저 **Claude Pro 또는 Max 구독**이 필요합니다. 두 방법 중 편한 것을 고르세요.
+사용할 환경에 맞는 방법 하나를 고르세요. 스킬 자체는 별도 API 키를 요구하지 않으며, 실행 한도와 이용 조건은 각 서비스 플랜을 따릅니다.
 
-### 방법 A. claude.ai 웹/데스크톱 (가장 쉬움)
+### 방법 A. claude.ai 웹/데스크톱에 업로드
 
 1. 이 저장소의 [**Releases**](../../releases) 페이지에서 원하는 스킬의 `.zip`을 내려받습니다. *(예: `mock-interview.zip`)*
-2. [claude.ai](https://claude.ai)에 Pro/Max 계정으로 로그인
-3. **설정 → Skills**(또는 Capabilities / Features)로 이동 *(스킬 업로드가 보이려면 코드 실행 기능이 켜져 있어야 합니다)*
+2. [claude.ai](https://claude.ai)에 로그인
+3. 설정에서 **Skills**로 이동합니다. *(메뉴 이름과 사용 가능 여부는 계정·플랜에 따라 다를 수 있습니다.)*
 4. **스킬 업로드**에서 받은 `.zip`을 선택
 5. 새 대화에서 스킬을 호출하면 끝!
 
-### 방법 B. Claude Code (CLI / IDE)
+업로드한 ZIP은 해당 릴리스 시점의 스냅샷입니다. 저장소의 원본이 바뀌어도 자동 갱신되지 않으므로, 새 릴리스가 나오면 다시 내려받아 업로드해야 합니다.
 
-저장소를 클론해 원하는 스킬 폴더를 복사합니다.
+### 방법 B. 저장소 안에서 Claude Code·Codex로 사용
+
+개발하거나 내용을 직접 고칠 때 권장하는 방식입니다. 저장소를 클론하고 저장소 루트 또는 그 하위 디렉터리에서 Claude Code나 Codex를 실행하면 됩니다. 별도 복사는 필요 없습니다.
+
+```bash
+git clone https://github.com/hye-ung97/dev-career-kit.git
+cd dev-career-kit
+```
+
+저장소에 포함된 `.claude/skills`와 `.agents/skills`가 같은 `skills/` 원본을 가리킵니다.
+
+| 환경 | 명시적 호출 | 스킬 목록 |
+|------|-------------|-----------|
+| Claude Code | `/mock-interview`, `/interview-retro` | `/`를 입력해 명령 확인 |
+| Codex CLI·IDE | `$mock-interview`, `$interview-retro` | `/skills` |
+
+두 환경 모두 **“모의 면접 봐줘”**, **“오늘 받은 면접 질문 복기해줘”** 같은 자연어 요청으로도 스킬을 선택할 수 있습니다.
+
+### 방법 C. 사용자 전역으로 설치
+
+모든 프로젝트에서 사용하려면 실제 원본 폴더를 각 런타임의 사용자 스킬 경로로 복사합니다.
 
 ```bash
 git clone https://github.com/hye-ung97/dev-career-kit.git
 cd dev-career-kit
 
-# 전역으로 설치(모든 프로젝트에서 사용)
-cp -r .claude/skills/mock-interview ~/.claude/skills/
+# Claude Code 전역 설치
+mkdir -p ~/.claude/skills
+cp -R skills/mock-interview skills/interview-retro ~/.claude/skills/
+
+# Codex 전역 설치
+mkdir -p ~/.agents/skills
+cp -R skills/mock-interview skills/interview-retro ~/.agents/skills/
 ```
 
-이후 `/mock-interview` 로 실행하거나 자연어로 호출됩니다.
+전역 설치본도 복사 시점의 스냅샷이므로 저장소 변경이 자동 반영되지 않습니다. 업데이트할 때는 원본을 다시 복사하세요.
+
+> **Codex 중복 설치 주의:** 저장소의 `.agents/skills`와 `~/.agents/skills` 양쪽에 같은 `name`의 스킬이 있으면 Codex는 둘을 병합하지 않고 모두 표시할 수 있습니다. 이 저장소 안에서만 사용할 경우 방법 B만 사용하세요. Codex의 탐색 경로·심볼릭 링크·중복 이름 동작은 [OpenAI 공식 스킬 문서](https://learn.chatgpt.com/ko-KR/docs/build-skills)를 참고하세요.
 
 ---
 
 ## 🎤 mock-interview
 
-**이력서로 보는 실전 기술 면접 — 꼬리물기부터 별점 피드백까지.**
+**이력서로 보는 실전 기술 면접 — 꼬리물기부터 독립 평가자 채점 리포트까지.**
 
-이력서(+선택 채용공고)를 올리면 Claude가 면접관이 되어 한 질문씩 진행하고, 끝나면 질문별 개선안과 별점 리포트를 줍니다. 새 대화에서 이력서를 올리고 **"모의 면접 봐줘"** 라고 하면 시작됩니다.
+이력서(+선택 채용공고)를 올리면 Claude Code 또는 Codex가 면접관이 되어 한 질문씩 진행하고, 끝나면 질문별 개선안과 별점·판정 리포트를 줍니다. 새 대화에서 이력서를 올리고 **"모의 면접 봐줘"** 라고 하면 시작됩니다.
 
 ### 왜 쓰나요
 
 예상 질문 리스트를 읽어주는 도구는 많습니다. 이 스킬은 다릅니다.
 
-- 🎯 **내 이력서로 묻습니다** — 이력서와 채용공고를 분석해 실제로 파고들 주제를 고릅니다.
+- 🎯 **내 이력서로 묻습니다** — JD를 5개 슬롯으로, 이력서 문장을 PSR(문제-해결-결과)로 분해해 실제로 파고들 주제를 겨냥합니다.
 - 🔍 **"왜?"를 집요하게 팝니다** — "구현했다"에서 멈추지 않고 원리·트레이드오프·장애 대응까지 보통 7~9단계 꼬리물기로 검증합니다. 암기인지 진짜 이해인지 대화로 가려냅니다.
-- 🧠 **기본기도 확인합니다** — 이력서 질문을 마친 뒤 전체의 약 10%를 백엔드 CS 질문으로 점검합니다.
-- 📋 **성장하는 피드백을 줍니다** — 끝나면 질문별 "좋았던 점 / 아쉬운 점 / 다음엔 이렇게" 개선안과 4개 축 별점 리포트를 받습니다.
+- 🧠 **기본기도 확인합니다** — 가벼운 자기소개·지원동기로 열고, 이력서 질문을 마친 뒤 전체의 약 10%를 백엔드 CS 질문으로 점검하고, 컬처핏·협업 질문으로 닫습니다.
+- ⚖️ **채점은 면접관이 하지 않습니다 (작성자≠평가자)** — 면접을 진행한 에이전트는 증거만 기록하고, **면접에 참여하지 않은 독립 평가자 3종**(기술·커뮤니케이션·성장)이 세션 노트만 보고 병렬로 채점해 자기관대 편향을 줄입니다.
+- 📋 **성장하는 피드백을 줍니다** — 끝나면 질문별 "좋았던 점 / 아쉬운 점 / 다음엔 이렇게" 개선안과 **5개 축 별점 + 시니어리티 가중 종합점수 + 판정(Verdict)** 리포트를 받습니다.
+- 🌱 **연습이 쌓입니다** — 매 면접이 세션 노트로 저장돼, 다음 면접에서 지난번에 끝내 막혔던 개념을 다시 검증합니다. (실전 회고는 아래 [interview-retro](#-interview-retro)로 이어집니다.)
 
 > 토스식 서버 개발자 면접의 관점을 반영했습니다 — *"쓸 줄 안다"가 아니라 "왜 그렇게 했고 내부에서 무슨 일이 일어나는지 아는가."*
 
@@ -72,11 +102,13 @@ cp -r .claude/skills/mock-interview ~/.claude/skills/
 ```
 1. 이력서 업로드 (필수)  +  채용공고 JD (선택)
         ↓
-2. 면접 설정  ─  시간(30분·1시간) / 피드백 방식 선택
+2. 면접 설정  ─  시간(30분·1시간) / 피드백 방식 선택 · 지난 세션 노트 자동 확인
         ↓
-3. 면접 진행  ─  한 질문씩 → 답변 → 꼬리물기 → … → 마지막 CS 구간
+3. 면접 진행  ─  오프닝(자기소개·동기) → 이력서·JD 꼬리물기 → CS 구간 → 클로징(컬처핏·협업)
         ↓
-4. 피드백 리포트  ─  질문별 개선안 + 별점(4개 축)
+4. 세션 노트 저장  ─  별점 없이 "증거"만 (누적 자산 · 평가자 입력)
+        ↓
+5. 채점 & 리포트  ─  독립 평가자 3종 병렬 채점 → 종합점수·판정 → 질문별 개선안 리포트
 ```
 
 **피드백 방식은 취향대로 고릅니다:**
@@ -87,12 +119,12 @@ cp -r .claude/skills/mock-interview ~/.claude/skills/
 | 질문마다 즉시 (학습형) | 답변 직후 짧은 코칭 후 다음 질문 |
 | 하이브리드 | 실전처럼 진행하되 막히면 힌트 제공 |
 
-**리포트는 4개 축으로 채점됩니다:** 기술 깊이 · 문제 해결·설계 · 커뮤니케이션 · 경험의 구체성 (각 1~5점, 종합 별점 = 평균).
+**리포트는 5개 축으로 채점됩니다:** 기술 깊이 · 문제 해결·설계 · 커뮤니케이션 · 경험의 구체성 · 성장 가능성 (각 1~5점). 축은 독립 평가자 3종이 나눠 맡고, **시니어리티(주니어·미들·시니어)별 가중치**로 종합점수를 낸 뒤 **판정**(🟢 강력추천 / 🟢 추천 / 🟡 보완 후 재도전 / 🔴 지금은 부족)으로 이어집니다.
 
 ### 자주 묻는 질문
 
 **Q. 비용이 드나요?**
-아니요. 본인의 Claude Pro/Max 구독 한도 안에서 동작하며, 별도 API 키나 과금이 없습니다.
+스킬 자체가 별도 API 키나 API 과금을 요구하지는 않습니다. 실행 비용과 사용 한도는 이용 중인 Claude Code 또는 Codex 플랜을 따릅니다.
 
 **Q. 채용공고(JD)가 꼭 필요한가요?**
 아니요. 이력서만으로도 진행됩니다. JD를 함께 올리면 그 회사가 궁금해할 지점 위주로 더 맞춤형 질문이 나옵니다.
@@ -105,33 +137,109 @@ cp -r .claude/skills/mock-interview ~/.claude/skills/
 
 ---
 
+## 🔁 interview-retro
+
+**실전 면접을 보고 왔다면 — 받은 질문을 다음 연습으로 되먹입니다.**
+
+실전 면접에서 받은 질문들을 복기해서 알려주면, 에이전트가 그것을 `mock-interview`가 쌓아둔 **세션 노트·CS 질문은행과 대조**해 갭을 가르고, 놓친 질문의 복습 노트를 만든 뒤 다음 모의면접이 참조할 **이월 개념**으로 되먹입니다. 새 대화에서 받은 질문을 붙여넣고 **"실전 면접 회고해줘"** 라고 하면 시작됩니다.
+
+- 🗂️ **A/B/C로 분류합니다** — 각 질문을 **A(이미 연습함) · B(우리 영역인데 안 다룸) · C(완전 신규)**로 나눕니다. *"연습했는데도 실전에서 막힌"* A가 복습 1순위입니다.
+- 📝 **놓친 질문마다 모범 답안** — "왜 나왔나 / 핵심 원리 / 면접에서 이렇게 답했으면 / 더 볼 것"을 막힌 사람 기준으로 풀어줍니다. (정확성 우선 — 애매한 개념은 지어내지 않습니다.)
+- ♻️ **다음 모의면접으로 환류** — B·C와 "A인데 막힌" 개념을 세션 노트의 `이월 개념`에 추가해, 다음 `mock-interview` 실행 시 자동으로 재검증 대상이 되게 합니다.
+
+> 이 스킬은 **새 면접을 진행하지 않습니다.** 이미 본 면접을 분석·환류할 뿐입니다. 처음부터 모의 면접을 원하면 `mock-interview`를 쓰세요. 모의면접을 한 번도 안 했다면(세션 노트가 없다면) A 분류 없이 B/C 위주로 분석하고, 먼저 기본 커버리지를 만들자고 안내합니다.
+
+---
+
+## Claude Code와 Codex가 파일을 읽는 방식
+
+`skills/`는 사람이 수정하고 배포하는 **단일 원본**입니다. 다만 두 런타임이 이 폴더를 직접 탐색하는 것은 아닙니다. 각 런타임은 자기 진입점에서 스킬을 발견하고, 심볼릭 링크를 따라 같은 원본을 읽습니다.
+
+| 런타임 | 탐색하는 진입점 | 링크가 가리키는 실제 원본 |
+|--------|-----------------|----------------------------|
+| Claude Code | `.claude/skills/<스킬명>/` | `skills/<스킬명>/` |
+| Codex CLI·IDE | `.agents/skills/<스킬명>/` | `skills/<스킬명>/` |
+
+예를 들어 `mock-interview`가 실행될 때의 경로는 다음과 같습니다.
+
+```text
+Claude Code ──> .claude/skills/mock-interview/SKILL.md ─┐
+                                                       ├─> skills/mock-interview/SKILL.md
+Codex       ──> .agents/skills/mock-interview/SKILL.md ─┘
+```
+
+스킬은 필요한 만큼 단계적으로 로드됩니다.
+
+1. **탐색:** `SKILL.md` 맨 위의 `name`과 `description`을 보고 어떤 요청에 쓸 스킬인지 판단합니다.
+2. **활성화:** 사용자가 스킬을 명시적으로 호출하거나 요청이 설명과 일치하면 해당 `SKILL.md`의 본문을 읽고 워크플로를 따릅니다.
+3. **실행:** 본문에서 필요하다고 지시한 `references/`, `assets/`, 이전 세션 노트만 추가로 읽습니다. 모든 지원 파일을 매번 한꺼번에 읽는 구조는 아닙니다.
+
+| 파일·디렉터리 | 역할 | 언제 읽히나 |
+|---------------|------|-------------|
+| `skills/*/SKILL.md` | 스킬의 실행 조건과 핵심 워크플로 | 해당 스킬이 활성화될 때 |
+| `skills/*/references/` | 질문 설계 가이드·CS 질문은행 같은 상세 지식 | `SKILL.md`의 절차상 필요할 때 |
+| `skills/*/assets/` | 세션 노트·피드백 양식·평가자 지침 | 기록이나 평가 단계에서 필요할 때 |
+| `interview-notes/` | 이전 면접의 증거와 다음 면접으로 넘길 개념 | 스킬이 이전 기록을 확인하거나 새 기록을 저장할 때 |
+| `README.md` | 사람을 위한 설치·사용·유지보수 문서 | 런타임 지침으로 자동 적용되지 않음 |
+| `dist/` | claude.ai 업로드와 릴리스용 ZIP | 실행 중에는 읽지 않음 |
+
+`CLAUDE.md`와 `AGENTS.md`는 각각 Claude Code와 Codex에 프로젝트 공통 규칙을 줄 때 사용하는 **별도의 선택 파일**입니다. 현재 저장소에는 두 파일이 없으며, 면접 동작은 선택된 스킬의 `SKILL.md`가 정의합니다.
+
+`skills/`의 원본을 수정하면 두 심볼릭 링크에 즉시 같은 내용이 보입니다. Codex의 스킬 목록에 변경이 바로 나타나지 않으면 Codex를 다시 시작하세요. 반대로 전역 경로에 복사했거나 claude.ai에 ZIP을 업로드한 설치본은 자동 갱신되지 않습니다.
+
+---
+
 ## 프로젝트 구조
 
 ```
-.claude/skills/
-└─ mock-interview/                 # 스킬 본체
-   ├─ SKILL.md                     # 면접관 페르소나 · 진행 순서 · 꼬리물기 규칙
-   ├─ references/backend-cs-question-bank.md   # CS 구간 질문은행
-   └─ assets/
-      ├─ feedback-template.md      # 피드백 리포트 양식
-      └─ scoring-rubric.md         # 별점 산정 기준
+skills/                            # 벤더 중립 단일 원본
+├─ mock-interview/                 # 🎤 모의 면접 스킬
+│  ├─ SKILL.md
+│  ├─ references/
+│  │  ├─ question-design-guide.md
+│  │  └─ backend-cs-question-bank.md
+│  └─ assets/
+│     ├─ session-notes-template.md
+│     ├─ feedback-template.md
+│     ├─ scoring-rubric.md
+│     └─ evaluators/
+│        ├─ technical.md
+│        ├─ communication.md
+│        └─ growth.md
+└─ interview-retro/                # 🔁 실전 회고·환류 스킬
+   └─ SKILL.md
 
-.agents/skills/
-└─ mock-interview                  # → .claude/skills/mock-interview 심볼릭 링크
-                                   #   (.agents 경로를 쓰는 런타임용 미러)
+.claude/skills/                    # Claude Code 진입점
+├─ mock-interview -> ../../skills/mock-interview
+└─ interview-retro -> ../../skills/interview-retro
+
+.agents/skills/                    # Codex 진입점
+├─ mock-interview -> ../../skills/mock-interview
+└─ interview-retro -> ../../skills/interview-retro
+
+interview-notes/                   # 세션 노트가 쌓이는 곳 (실명·개인정보 → gitignore)
+                                   #   빈 템플릿만 위 session-notes-template.md 로 추적
 ```
 
-> 배포용 zip과 산출물은 저장소에 포함하지 않고 [Releases](../../releases)로 제공합니다.
+`SKILL.md`와 지원 리소스는 `skills/`에서만 수정합니다. 제품별 디렉터리는 복사본이 아니라 같은 원본을 가리키므로 두 런타임의 내용이 어긋나지 않습니다.
+
+> 실제 면접 세션 노트(`interview-notes/`)와 배포 산출물(`dist/`)은 저장소에 포함하지 않습니다(gitignore). 배포용 zip은 [Releases](../../releases)로 제공합니다.
 
 ### 기여 · 배포 (maintainer용)
 
-1. `.claude/skills/<스킬명>/`(SKILL.md, `references/`, `assets/`)을 수정합니다.
-2. 폴더 **전체**를 zip으로 묶습니다. *(일부 파일만 넣으면 피드백 양식이나 질문은행이 누락됩니다.)*
+1. `skills/<스킬명>/`의 `SKILL.md`, `references/`, `assets/`를 수정합니다.
+2. 폴더 **전체**를 zip으로 묶습니다. *(일부 파일만 넣으면 질문 설계 가이드·독립 평가자 프롬프트·질문은행이 누락됩니다.)*
    ```bash
-   cd .claude/skills
-   zip -r mock-interview.zip mock-interview
+   mkdir -p dist
+   (cd skills && python3 -m zipfile -c ../dist/mock-interview.zip mock-interview)
+   (cd skills && python3 -m zipfile -c ../dist/interview-retro.zip interview-retro)
    ```
-3. 새 zip을 GitHub Releases에 올립니다. 사용자는 기존 스킬을 지운 뒤 재업로드하면 됩니다.
+3. 압축 파일을 검사한 뒤 GitHub Releases에 올립니다.
+   ```bash
+   python3 -m zipfile -t dist/mock-interview.zip
+   python3 -m zipfile -t dist/interview-retro.zip
+   ```
+   심볼릭 링크가 아니라 `skills/`의 실제 원본을 패키징해야 합니다.
 
 ---
 

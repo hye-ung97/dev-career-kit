@@ -1,0 +1,5 @@
+# 배포 산출물 (소스 .claude/ 에서 생성됨 → GitHub Releases로 배포)
+dist/
+
+# macOS
+.DS_Store

@@ -1,5 +1,9 @@
 # 배포 산출물 (소스 .claude/ 에서 생성됨 → GitHub Releases로 배포)
 dist/
 
+# 실제 면접 세션 기록 (실명·개인정보 포함 → 로컬 전용)
+# 빈 템플릿은 .claude/skills/.../session-notes-template.md 로 추적함
+interview-notes/
+
 # macOS
 .DS_Store

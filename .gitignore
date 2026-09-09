@@ -5,5 +5,16 @@ dist/
 # 빈 템플릿은 skills/.../session-notes-template.md 로 추적함
 interview-notes/
 
+# 작업용 임시 파일 (이력서 원본·변환 결과 등 개인정보 포함 → 로컬 전용)
+tmp/
+
+# 이력서·포트폴리오 원본 (어디에 두든 실수로 커밋되지 않게)
+*이력서*
+*resume*
+*Resume*
+*portfolio*
+*.pdf
+*.docx
+
 # macOS
 .DS_Store

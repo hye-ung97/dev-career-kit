@@ -15,11 +15,12 @@
 
 | 스킬 | 하는 일 | 상태 |
 |------|---------|------|
+| 🎯 **[interview-prep](#-interview-prep)** | 이력서(+JD) 기반 예상 꼬리질문 트리 + 모의답안 예습 시트 | ✅ 사용 가능 |
 | 🎤 **[mock-interview](#-mock-interview)** | 이력서(+JD) 기반 실전 기술 면접 · 꼬리물기 · 독립 평가자 채점 리포트 | ✅ 사용 가능 |
 | 🔁 **[interview-retro](#-interview-retro)** | 실전 면접 회고 → 놓친 질문 복습 → 다음 모의면접으로 환류 | ✅ 사용 가능 |
 | 🔜 *더 추가 예정* | 이력서 리뷰, 자소서 코칭 등 | 준비 중 |
 
-> 두 스킬은 **환류 루프**로 짝을 이룹니다 — `mock-interview`가 세션 노트를 쌓고, `interview-retro`가 실전에서 받은 질문을 그 노트에 되먹여 다음 연습을 실전에 더 가깝게 만듭니다.
+> 세 스킬은 하나의 **환류 루프**를 이룹니다 — `interview-prep`으로 예상 질문과 모의답안을 미리 준비하고 → `mock-interview`가 실전처럼 검증하며 세션 노트를 쌓고 → `interview-retro`가 실전에서 받은 질문을 그 노트에 되먹여, 다음 `interview-prep`이 그걸 최우선 예상 질문으로 삼습니다. 예습 → 실전 → 회고가 원형으로 돌며 매번 실전에 더 가까워집니다.
 
 ---
 
@@ -126,10 +127,10 @@ claude          # 또는 codex
 
 | 환경 | 명시적 호출 | 스킬 목록 보기 |
 |------|-------------|-----------|
-| Claude Code | `/mock-interview`, `/interview-retro` | `/`를 입력해 명령 확인 |
-| Codex CLI·IDE | `$mock-interview`, `$interview-retro` | `/skills` |
+| Claude Code | `/interview-prep`, `/mock-interview`, `/interview-retro` | `/`를 입력해 명령 확인 |
+| Codex CLI·IDE | `$interview-prep`, `$mock-interview`, `$interview-retro` | `/skills` |
 
-두 환경 모두 **"모의 면접 봐줘"**, **"오늘 받은 면접 질문 복기해줘"** 같은 자연어 요청으로도 스킬이 선택됩니다.
+두 환경 모두 **"예상 면접 질문 뽑아줘"**, **"모의 면접 봐줘"**, **"오늘 받은 면접 질문 복기해줘"** 같은 자연어 요청으로도 스킬이 선택됩니다.
 
 #### 방법 C. 사용자 전역으로 설치
 
@@ -141,11 +142,11 @@ cd dev-career-kit
 
 # Claude Code 전역 설치
 mkdir -p ~/.claude/skills
-cp -R skills/mock-interview skills/interview-retro ~/.claude/skills/
+cp -R skills/interview-prep skills/mock-interview skills/interview-retro ~/.claude/skills/
 
 # Codex 전역 설치
 mkdir -p ~/.agents/skills
-cp -R skills/mock-interview skills/interview-retro ~/.agents/skills/
+cp -R skills/interview-prep skills/mock-interview skills/interview-retro ~/.agents/skills/
 ```
 
 전역 설치본도 복사 시점의 스냅샷이므로 저장소 변경이 자동 반영되지 않습니다. 업데이트할 때는 원본을 다시 복사하세요.
@@ -168,9 +169,9 @@ cp -R skills/mock-interview skills/interview-retro ~/.agents/skills/
 
 면접이 끝나면 세션 노트가 **Claude Code·Codex를 실행한 디렉터리 기준** `interview-notes/{지원자}_{YYYY-MM-DD}_session.md`로 저장됩니다. (폴더는 없으면 만들어집니다.)
 
-- 이 폴더가 두 스킬을 잇는 **공용 자산**입니다. 다음 모의면접은 여기서 *이월 개념(지난번에 끝내 막혔던 것)*을 읽어 재검증하고, `interview-retro`는 여기에 실전 질문을 되먹입니다.
+- 이 폴더가 세 스킬을 잇는 **공용 자산**입니다. `interview-prep`은 여기서 *이월 개념*을 읽어 예상 질문에 반영하고, 다음 모의면접은 여기서 *이월 개념(지난번에 끝내 막혔던 것)*을 읽어 재검증하며, `interview-retro`는 여기에 실전 질문을 되먹입니다.
 - 그래서 **매번 같은 폴더에서 실행**해야 기록이 이어집니다. 전역 설치(방법 C)로 아무 데서나 부르면 그때그때 다른 폴더에 노트가 흩어집니다.
-- 세션 노트를 매칭하는 기준은 **지원자 이름**입니다. 두 스킬에서 같은 이름을 쓰세요.
+- 세션 노트를 매칭하는 기준은 **지원자 이름**입니다. 세 스킬에서 같은 이름을 쓰세요.
 
 ### 실전 면접을 보고 왔다면
 
@@ -180,6 +181,38 @@ cp -R skills/mock-interview skills/interview-retro ~/.agents/skills/
 ```
 
 받은 질문을 기억나는 대로 붙여넣으면 됩니다. 정확할수록 좋고, 꼬리질문과 당황했던 지점까지 적으면 분류 정확도가 올라갑니다. 회사·포지션과 "어디서 막혔는지" 체감을 같이 주면 우선순위에 반영됩니다.
+
+---
+
+## 🎯 interview-prep
+
+**면접에 들어가기 전에 — 예상 꼬리질문과 모의답안을 미리 펼쳐봅니다.**
+
+이력서(+선택 채용공고)를 건네면 Claude Code 또는 Codex가 "이 이력서라면 무엇을 왜 물을지"를 예측해 **예습 시트**를 만들어 줍니다. 이력서 경로를 알려주거나 첨부하고 **"예상 면접 질문 뽑아줘"** 라고 하면 시작됩니다.
+
+### 왜 쓰나요
+
+흔한 예상 질문 리스트와 다른 점이 셋 있습니다.
+
+- 🌳 **꼬리질문 트리를 예측합니다** — 주제마다 오프너 1개가 아니라, `mock-interview`와 **같은 깊이 사다리(L1~L5)**로 "이렇게 답하면 다음엔 이 층을 이렇게 판다"는 체인을 미리 펼칩니다. 그래서 예습 깊이와 실전 압박 깊이가 어긋나지 않습니다.
+- ✍️ **경험을 지어내지 않습니다** — 기술 원리·CS 같은 **지식형** 답변은 정확한 완성형으로, 본인 프로젝트·수치 같은 **경험형** 답변은 STAR/PSR 골격 + 플레이스홀더(`[실제 측정값]`·`[본인 사례]`)로 남깁니다. 가짜 숫자가 든 "그럴듯한 거짓 답안"을 만들지 않습니다.
+- 🔁 **실전 흐름 전체를 예습합니다** — 오프닝(자기소개·지원동기) → 이력서·JD 기술 → 백엔드 CS 기초 → 컬처핏까지, `mock-interview`와 같은 구간을 미리 리허설합니다. 지난 실전에서 받은 질문(`interview-retro`가 남긴 이월 개념)이 있으면 그걸 최우선 예상 질문으로 삼습니다.
+
+### 이렇게 진행됩니다
+
+```
+1. 이력서 전달 (필수)  +  채용공고 JD (선택)  ·  지난 회고·세션 노트 자동 확인
+        ↓
+2. 설정  ─  깊이 모드(워밍업·표준·심화) / 대상 회사·집중 영역
+        ↓
+3. 예상 질문 설계  ─  주제별 꼬리질문 트리(L1→L4) + CS·오프닝·컬처핏
+        ↓
+4. 모범답안 작성  ─  지식형=완성형 / 경험형=골격+플레이스홀더 / 컬처핏=조건+골격
+        ↓
+5. 프렙 시트 저장  ─  interview-notes/{지원자}_{날짜}_prep.md  → 이어서 mock-interview로 검증
+```
+
+> **이건 대본이 아니라 골격입니다.** 모범답안을 통째로 외우면 실전 꼬리질문에서 무너집니다. 플레이스홀더를 본인 경험으로 채우고, 각 답의 **면접관 의도**를 이해한 뒤 `mock-interview`로 실전 검증하세요.
 
 ---
 
@@ -315,6 +348,12 @@ Codex       ──> .agents/skills/mock-interview/SKILL.md ─┘
 
 ```
 skills/                            # 벤더 중립 단일 원본
+├─ interview-prep/                 # 🎯 예상 질문·모의답안 예습 스킬
+│  ├─ SKILL.md                     #    깊이 사다리·질문 설계는 mock-interview 것을 공유
+│  ├─ references/
+│  │  └─ model-answer-guide.md         # 모범답안 규칙 (지식형=완성형 / 경험형=골격+플레이스홀더)
+│  └─ assets/
+│     └─ prep-sheet-template.md        # 예습 시트 양식
 ├─ mock-interview/                 # 🎤 모의 면접 스킬
 │  ├─ SKILL.md
 │  ├─ references/
@@ -333,16 +372,20 @@ skills/                            # 벤더 중립 단일 원본
    └─ SKILL.md
 
 .claude/skills/                    # Claude Code 진입점
+├─ interview-prep -> ../../skills/interview-prep
 ├─ mock-interview -> ../../skills/mock-interview
 └─ interview-retro -> ../../skills/interview-retro
 
 .agents/skills/                    # Codex 진입점
+├─ interview-prep -> ../../skills/interview-prep
 ├─ mock-interview -> ../../skills/mock-interview
 └─ interview-retro -> ../../skills/interview-retro
 
-interview-notes/                   # 세션 노트가 쌓이는 곳 — 스킬이 실행 시 자동 생성
+interview-notes/                   # 세 스킬의 공용 기록이 쌓이는 곳 — 스킬이 실행 시 자동 생성
+                                   #   {지원자}_{날짜}_prep.md     (interview-prep 예습 시트)
+                                   #   {지원자}_{날짜}_session.md  (mock-interview 세션 노트)
+                                   #   {지원자}_{날짜}_retro.md    (interview-retro 회고 노트)
                                    #   실명·개인정보가 담기므로 통째로 gitignore (클론하면 없음)
-                                   #   양식은 위 assets/session-notes-template.md 가 원본
 ```
 
 `SKILL.md`와 지원 리소스는 `skills/`에서만 수정합니다. 제품별 디렉터리는 복사본이 아니라 같은 원본을 가리키므로 두 런타임의 내용이 어긋나지 않습니다.
@@ -357,13 +400,17 @@ interview-notes/                   # 세션 노트가 쌓이는 곳 — 스킬�
    mkdir -p dist
    (cd skills && python3 -m zipfile -c ../dist/mock-interview.zip mock-interview)
    (cd skills && python3 -m zipfile -c ../dist/interview-retro.zip interview-retro)
+   (cd skills && python3 -m zipfile -c ../dist/interview-prep.zip interview-prep)
    ```
 3. 압축 파일을 검사한 뒤 GitHub Releases에 올립니다.
    ```bash
    python3 -m zipfile -t dist/mock-interview.zip
    python3 -m zipfile -t dist/interview-retro.zip
+   python3 -m zipfile -t dist/interview-prep.zip
    ```
    심볼릭 링크가 아니라 `skills/`의 실제 원본을 패키징해야 합니다.
+
+   > **interview-prep은 mock-interview에 의존합니다.** 예상 질문 설계에 mock-interview의 `references/question-design-guide.md`·`depth-ladder.md`·`backend-cs-question-bank.md`를 상대경로로 공유합니다. 저장소(방법 B)에서는 세 스킬이 나란히 있어 그대로 동작하지만, **`interview-prep.zip`만 단독 업로드(방법 A)하면 그 공유 파일이 빠집니다.** claude.ai에 올릴 때는 `mock-interview.zip`도 함께 올리거나, 두 폴더를 한 zip으로 묶으세요.
 
 ---
 

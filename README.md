@@ -92,14 +92,40 @@ AI  : 세션 노트를 interview-notes/에 저장했습니다.
 
 스킬 자체는 별도 API 키를 요구하지 않습니다. 실행 비용과 사용 한도는 이용 중인 Claude Code·Codex 플랜을 따릅니다.
 
-| | 방법 A. claude.ai 업로드 | 방법 B. 저장소 안에서 실행 | 방법 C. 전역 설치 |
-|---|---|---|---|
-| **이런 분께** | 터미널 없이 웹/데스크톱 앱만 씁니다 | 일단 써보고, 내용도 고쳐보고 싶습니다 | 어느 프로젝트에서든 부르고 싶습니다 |
-| **필요한 것** | claude.ai 계정 | git + Claude Code 또는 Codex | 〃 |
-| **세션 노트 누적** | 제한적 (아래 주의 참조) | ✅ 저장소의 `interview-notes/` | ✅ 실행한 폴더 |
-| **업데이트** | 새 릴리스를 다시 업로드 | `git pull` 하면 즉시 반영 | 원본을 다시 복사 |
+| | 방법 D. 플러그인 설치 | 방법 A. claude.ai 업로드 | 방법 B. 저장소 안에서 실행 | 방법 C. 전역 설치 |
+|---|---|---|---|---|
+| **이런 분께** | Claude Code에서 한 줄로 설치·업데이트하고 싶습니다 | 터미널 없이 웹/데스크톱 앱만 씁니다 | 일단 써보고, 내용도 고쳐보고 싶습니다 | 어느 프로젝트에서든 부르고 싶습니다 |
+| **필요한 것** | Claude Code (Codex 미지원) | claude.ai 계정 | git + Claude Code 또는 Codex | 〃 |
+| **세션 노트 누적** | ✅ 실행한 폴더 | 제한적 (아래 주의 참조) | ✅ 저장소의 `interview-notes/` | ✅ 실행한 폴더 |
+| **업데이트** | `/plugin marketplace update` | 새 릴리스를 다시 업로드 | `git pull` 하면 즉시 반영 | 원본을 다시 복사 |
 
-> **처음이면 방법 B**를 권합니다. 세션 노트가 쌓여야 `interview-retro`의 환류 루프가 제대로 돌아갑니다.
+> **Claude Code만 쓴다면 방법 D(플러그인)**가 가장 간편합니다 — 등록·설치가 각각 한 줄이고 업데이트도 명령 하나입니다. **Codex를 쓰거나 스킬 내용을 직접 고치고 싶다면 방법 B**를 권합니다. 어느 쪽이든 세션 노트가 쌓여야 `interview-retro`의 환류 루프가 제대로 돌아갑니다.
+
+#### 방법 D. 플러그인으로 설치 (Claude Code 전용, 권장)
+
+Claude Code만 쓴다면 가장 간편합니다. 클론 없이 마켓플레이스를 등록하고 설치하면 됩니다.
+
+```
+# Claude Code 대화창에서 (한 번만)
+/plugin marketplace add hye-ung97/dev-career-kit
+
+# 플러그인 설치
+/plugin install dev-career-kit@dev-career-kit
+```
+
+설치하면 스킬이 **네임스페이스**와 함께 등록됩니다. 명시적으로 부를 때는 앞에 플러그인 이름이 붙습니다.
+
+```
+/dev-career-kit:interview-prep
+/dev-career-kit:mock-interview
+/dev-career-kit:interview-retro
+```
+
+**"예상 면접 질문 뽑아줘"**, **"모의 면접 봐줘"**, **"오늘 받은 면접 질문 복기해줘"** 같은 자연어 요청으로도 선택됩니다. 업데이트는 `/plugin marketplace update` 한 줄이면 됩니다.
+
+> **주의 — Codex는 지원하지 않습니다.** 플러그인은 Claude Code 기능입니다. Codex에서 쓰려면 방법 B(저장소 안에서 실행) 또는 방법 C(전역 설치)를 사용하세요.
+>
+> **세션 노트는 실행한 폴더에 쌓입니다.** 환류 루프가 이어지려면 **매번 같은 폴더에서** Claude Code를 실행하세요. ([기록은 어디에 쌓이나요](#기록은-어디에-쌓이나요) 참조)
 
 #### 방법 A. claude.ai 웹/데스크톱에 업로드
 
@@ -381,6 +407,10 @@ skills/                            # 벤더 중립 단일 원본
 ├─ mock-interview -> ../../skills/mock-interview
 └─ interview-retro -> ../../skills/interview-retro
 
+.claude-plugin/                    # Claude Code 플러그인·마켓플레이스 매니페스트 (방법 D)
+├─ plugin.json                     #   플러그인 정의 — skills/ 를 자동 인식
+└─ marketplace.json                #   마켓플레이스 카탈로그 (source: "." — 이 저장소가 곧 플러그인)
+
 interview-notes/                   # 세 스킬의 공용 기록이 쌓이는 곳 — 스킬이 실행 시 자동 생성
                                    #   {지원자}_{날짜}_prep.md     (interview-prep 예습 시트)
                                    #   {지원자}_{날짜}_session.md  (mock-interview 세션 노트)
@@ -411,6 +441,12 @@ interview-notes/                   # 세 스킬의 공용 기록이 쌓이는 �
    심볼릭 링크가 아니라 `skills/`의 실제 원본을 패키징해야 합니다.
 
    > **interview-prep은 mock-interview에 의존합니다.** 예상 질문 설계에 mock-interview의 `references/question-design-guide.md`·`depth-ladder.md`·`backend-cs-question-bank.md`를 상대경로로 공유합니다. 저장소(방법 B)에서는 세 스킬이 나란히 있어 그대로 동작하지만, **`interview-prep.zip`만 단독 업로드(방법 A)하면 그 공유 파일이 빠집니다.** claude.ai에 올릴 때는 `mock-interview.zip`도 함께 올리거나, 두 폴더를 한 zip으로 묶으세요.
+
+4. **플러그인(방법 D)으로 배포할 때는** `.claude-plugin/plugin.json`과 `.claude-plugin/marketplace.json`의 `version`을 함께 올린 뒤 커밋·push합니다. 마켓플레이스는 원격 저장소를 읽으므로, push 전 변경은 `/plugin marketplace update`에 반영되지 않습니다.
+   ```bash
+   claude plugin validate .   # 매니페스트 검증 (✔ Validation passed 확인)
+   ```
+   사용자는 `/plugin marketplace update` 후 `/plugin install dev-career-kit@dev-career-kit`로 최신본을 받습니다. 배포 전 로컬 검증은 `claude --plugin-dir .` 로 이 저장소를 임시 로드해 확인할 수 있습니다.
 
 ---
 
